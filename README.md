@@ -1,5 +1,3 @@
-# Backend Engineering Interview Assignment (Golang)
-
 ## Requirements
 
 To run this project you need to have the following installed:
