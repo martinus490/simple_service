@@ -1,0 +1,188 @@
+# This is the OpenAPI specification for your service. It is used to generate the client code.
+# To generate the server code, use the Gradle task `openApiGenerate`. The 
+# generated code will be placed in `build/generate-resources/main`.
+#
+# We will evaluate you based on how well you design your API.
+# 1. How well it follows REST principles.
+# 2. How easy it is to understand and use.
+#
+# References
+# 1. https://swagger.io/specification/
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: User Service
+  license:
+    name: MIT
+servers:
+  - url: http://localhost
+paths:  
+  /register:
+    post:
+      summary: This is a registration endpoint.
+      operationId: register
+      requestBody:
+        required: true
+        content:
+          application/json:
+            type: object
+            properties:
+              phoneNumber:
+                type: string
+                description: User's phone number
+              fullname:
+                type: string
+                description: User's full name
+              password:
+                type: string
+                description: User's password
+            required:
+              - phoneNumber
+              - fullname
+              - password
+      responses:
+        '200':
+          description: 
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/RegistrationResponse"
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  
+  /login:
+    post:
+      summary: This is a login endpoint.
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            type: object
+            properties:
+              phoneNumber:
+                type: string
+                description: User's phone number
+              password:
+                type: string
+                description: User's password
+            required:
+              - phoneNumber
+              - password
+      responses:
+        '200':
+          description: 
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /my-profile:
+    get:
+      summary: This is an endpoint to get user profile.
+      operationId: GetMyProfile
+      parameters:
+        - in: header
+          name: jwt
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: 
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/GetMyProfileResponse"
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      summary: This is an endpoint to update user profile.
+      operationId: UpdateMyProfile
+      parameters:
+        - in: header
+          name: jwt
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            type: object
+            properties:
+              phoneNumber:
+                type: string
+                description: User's phone number
+              password:
+                type: string
+                description: User's password
+            required:
+              - phoneNumber
+              - password
+      response:
+        '200':
+          description: 
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/UpdateMyProfileResponse"
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      
+
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+    RegistrationResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+    LoginResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        jwt:
+          type: string
+    GetMyProfileResponse:
+      type: object
+      properties:
+        name:
+          type: string
+        phone_number:
+          type: string
+    UpdateMyProfileResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
